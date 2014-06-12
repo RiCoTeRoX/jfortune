@@ -11,6 +11,7 @@
       separation: 2,
       min_spins: 10,
       max_spins: 15,
+      direction: 1,
       onSpinBounce: function() {}
     }, args);
 
@@ -24,7 +25,7 @@
       var deferred = $.Deferred();
       var position = Math.floor(prices_delta * (price - 1/2) + randomBetween(options.separation, prices_delta - options.separation));
       var spins = randomBetween(options.min_spins, options.max_spins);
-      var final_position = 360 * spins + position;
+      var final_position = options.direction * (360 * spins + position);
       var prev_position = 0;
       var is_bouncing = false;
 

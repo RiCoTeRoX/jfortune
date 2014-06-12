@@ -1,4 +1,8 @@
-var $r = $('.roulette').fortune(24);
+var $r = $('.roulette').fortune({
+	prices: 24, 
+	duration: 5000,
+	direction: -1
+});
 
 var clickHandler = function() {
   $('.spinner').off('click');
