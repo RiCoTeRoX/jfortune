@@ -20,8 +20,13 @@
     var prices_delta = 360 / prices_amount;
     var is_spinning = false;
 
-    fortune.spin = function(price) {
-      price = typeof price === "number"?price:Math.floor(Math.random() * prices_amount);
+    fortune.spin = function(price, direction) {
+      price = typeof price === "number" ? price:Math.floor(Math.random() * prices_amount);
+      if (direction === -1) {
+        price = prices_amount - price;
+      }
+
+      options.direction = direction || options.direction;
       var deferred = $.Deferred();
       var position = Math.floor(prices_delta * (price - 1/2) + randomBetween(options.separation, prices_delta - options.separation));
       var spins = randomBetween(options.min_spins, options.max_spins);
@@ -73,8 +78,8 @@
       setTimeout(function() {
         fortune
         .css({
-          "transform": "rotate(" + position + "deg)",
-          "-webkit-transform": "rotate(" + position + "deg)",
+          "transform": "rotate(" + options.direction * position + "deg)",
+          "-webkit-transform": "rotate(" + options.direction * position + "deg)",
           "transition": "",
           "-webkit-transition": ""
         })
@@ -86,6 +91,13 @@
       }, options.duration);
 
       return deferred.promise();
+    };
+
+    fortune.rotate = function(deg) {
+      fortune.css({
+        "transform": "rotate(" + deg + "deg)",
+        "-webkit-transform": "rotate(" + deg + "deg)"
+      });
     };
 
     var getRotationDegrees = function(obj) {
