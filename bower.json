@@ -8,5 +8,8 @@
   "devDependencies": {
     "bezier": "https://gist.github.com/3783009.git",
     "qunit": "~1.14.0"
+  },
+  "dependencies": {
+    "bezier": "https://gist.github.com/3783009.git"
   }
 }
