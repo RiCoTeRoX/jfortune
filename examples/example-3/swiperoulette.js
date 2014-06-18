@@ -19,7 +19,7 @@ var options = {
         name: 'Friends'
       }],
       duration: 5000,
-      spin_classname: 'spinner',
+      spinner_classname: 'spinner',
       separation: 10,
       separator_thickness: 5
     },

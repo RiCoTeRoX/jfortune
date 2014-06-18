@@ -114,14 +114,14 @@
   };
 
   $.fn.fortune.spinnerBounce = function(direction_multiplier) {
-    wheel.siblings('.' + opts.spin_classname).css({
+    wheel.siblings('.' + opts.spinner_classname).css({
       transform: 'rotate(' + 5 * direction_multiplier + 'deg)',
       '-webkit-transform': 'rotate(' + 5 * direction_multiplier + 'deg)'
     });
   };
 
   $.fn.fortune.stopSpinnerBounce = function() {
-    wheel.siblings('.' + opts.spin_classname).css({
+    wheel.siblings('.' + opts.spinner_classname).css({
       transform: 'rotate(0)',
       '-webkit-transform': 'rotate(0)'
     });
@@ -133,7 +133,7 @@
     min_spins: 10,
     max_spins: 15,
     direction: 'clockwise',
-    spinner_class: 'spinner',
+    spinner_classname: 'spinner',
     bezier: {
       p1x: .17,
       p1y: .67,
