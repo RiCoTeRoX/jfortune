@@ -1,132 +1,146 @@
 (function($) {
-  $.fn.fortune = function(args) {
+  var deferred,
+      angle,
+      direction,
+      gap,
+      is_bouncing,
+      opts,
+      prev_angle = 0,
+      price,
+      start_time,
+      stop,
+      total,
+      wheel;
 
-    if (args === undefined) {
-      throw(new Error("You must define the options.prices"));
+  function randomBetween(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
+
+  function directionMultiplier(direction) {
+    return direction === 'counterclockwise' ? -1 : 1;
+  };
+
+  function spin(timestamp) {
+    var x, y;
+
+    if (!start_time) {
+      start_time = timestamp;
     }
 
-    var options = $.extend({}, {
-      prices: args,
-      duration: 1000,
-      separation: 2,
-      min_spins: 10,
-      max_spins: 15,
-      direction: 1,
-      onSpinBounce: function() {}
-    }, args);
+    x = (timestamp - start_time)/opts.duration;
+    y = Bezier.cubicBezier(opts.bezier.p1x, opts.bezier.p1y, opts.bezier.p2x, opts.bezier.p2y, x);
+    angle = y * stop;
 
-    var fortune = this;
-    var prices_amount = Array.isArray(options.prices)?options.prices.length:options.prices;
-    var prices_delta = 360 / prices_amount;
-    var is_spinning = false;
+    wheel.rotate(angle, direction);
 
-    fortune.spin = function(price, direction) {
-      price = typeof price === "number" ? price:Math.floor(Math.random() * prices_amount);
-      if (direction === -1) {
-        price = prices_amount - price;
-      }
+    if (Math.abs(angle) < Math.abs(stop)) {
+      requestAnimationFrame(spin);
+    } else {
+      deferred.resolve($.isArray(opts.prices) ? opts.prices[price] : price);
+    }
+  };
 
-      options.direction = direction || options.direction;
-      var deferred = $.Deferred();
-      var position = Math.floor(prices_delta * (price - 1/2) + randomBetween(options.separation, prices_delta - options.separation));
-      var spins = randomBetween(options.min_spins, options.max_spins);
-      var final_position = options.direction * (360 * spins + position);
-      var prev_position = 0;
-      var is_bouncing = false;
+  function needBounce() {
+    var mod = Math.abs(Math.round((gap * 0.5 + angle) % gap)),
+        diff = Math.abs(angle - prev_angle),
+        low = opts.separator_thickness * 0.5,
+        high = gap - low;
 
-      is_spinning = true;
+    return mod < low || mod > high || diff > gap * 0.5;
+  };
 
-      fortune
-      .css({
-        "transform": "rotate(" + final_position + "deg)",
-        "-webkit-transform": "rotate(" + final_position + "deg)",
-        "transition": "transform " + options.duration + "ms cubic-bezier(.17,.67,.12,.99)",
-        "-webkit-transition": "-webkit-transform " + options.duration + "ms cubic-bezier(.17,.67,.12,.99)"
-      })
-      .siblings('.spin').removeClass('bounce');
+  function directionMultiplier(direction) {
+    return direction === 'counterclockwise' ? -1 : 1;
+  };
 
-      var bounceSpin = function() {
-        var curPosition = Math.floor(getRotationDegrees(fortune)),
-        mod = Math.floor((curPosition + prices_delta*0.5) % prices_delta),
-        diff_position,
-        position_threshold = prices_delta/5,
-        distance_threshold = prices_delta/10;
+  $.fn.fortune = function(options) {
+    if (!options || !options.prices) {
+      throw(new Error("You must define the prices."));
+    }
 
-        prev_position = Math.floor(curPosition < prev_position ? prev_position - 360 : prev_position);
-        diff_position = curPosition - prev_position;
+    wheel = this;
+    opts = $.extend({}, $.fn.fortune.defaults, options);
+    total = $.isArray(options.prices) ? opts.prices.length : options.prices;
+    gap = 360 / total;
 
-        if ((mod < position_threshold && diff_position < distance_threshold) ||
-            (mod < position_threshold*3 && diff_position >= distance_threshold)) {
-          if (!is_bouncing) {
-            fortune.siblings('.spin').addClass('bounce');
-            options.onSpinBounce(fortune.siblings('.spin'));
-            is_bouncing = true;
-          }
-        } else {
-          fortune.siblings('.spin').removeClass('bounce');
-          is_bouncing = false;
-        }
+    this.spin = function(fixed_price, fixed_direction) {
+      var position, rand, spins, direction_multiplier;
 
-        if (is_spinning) {
-          prev_position = curPosition;
-          requestAnimationFrame(bounceSpin);
-        }
-      };
+      deferred = $.Deferred();
+      price = fixed_price || Math.floor(Math.random() * total);
+      direction = fixed_direction || opts.direction;
+      direction_multiplier = directionMultiplier(direction);
 
-      var animSpin = requestAnimationFrame(bounceSpin);
+      rand = randomBetween(opts.separation, gap - opts.separation)
+      position = gap * ((direction === 'counterclockwise' ? total - price : price) - 0.5) + rand; // gap * price - gap / 2 + rand
+      spins = randomBetween(opts.min_spins, opts.max_spins);
+      stop = direction_multiplier * (360 * spins + position);
+      prev_angle = start_time = 0;
 
-      setTimeout(function() {
-        fortune
-        .css({
-          "transform": "rotate(" + options.direction * position + "deg)",
-          "-webkit-transform": "rotate(" + options.direction * position + "deg)",
-          "transition": "",
-          "-webkit-transition": ""
-        })
-        .siblings('.spin').removeClass('bounce');
-
-        cancelAnimationFrame(animSpin);
-        deferred.resolve(Array.isArray(options.prices)?options.prices[price]:price);
-        is_spinning = false;
-      }, options.duration);
+      requestAnimationFrame(spin);
 
       return deferred.promise();
     };
 
-    fortune.rotate = function(deg) {
-      fortune.css({
-        "transform": "rotate(" + deg + "deg)",
-        "-webkit-transform": "rotate(" + deg + "deg)"
-      });
-    };
+    this.rotate = function(fixed_angle, fixed_direction) {
+      $.fn.fortune.rotate(angle);
 
-    var getRotationDegrees = function(obj) {
-      var angle = 0,
-      matrix = obj.css("-webkit-transform") ||
-        obj.css("-moz-transform")    ||
-        obj.css("-ms-transform")     ||
-        obj.css("-o-transform")      ||
-        obj.css("transform");
-      if (matrix !== 'none') {
-        var values = matrix.split('(')[1].split(')')[0].split(','),
-        a = values[0],
-        b = values[1],
-        radians = Math.atan2(b, a);
+      direction = fixed_direction;
+      direction_multiplier = directionMultiplier(direction);
+      angle = fixed_angle;
 
-        if ( radians < 0 ) {
-          radians += (2 * Math.PI);
+      if (needBounce()) {
+        if (!is_bouncing) {
+          $.fn.fortune.spinnerBounce(direction_multiplier);
+          opts.onSpinBounce(this);
+          is_bouncing = true;
         }
-
-        angle = Math.round( radians * (180/Math.PI));
+      } else {
+        $.fn.fortune.stopSpinnerBounce();
+        is_bouncing = false;
       }
 
-      return angle;
+      prev_angle = angle;
     };
 
-    var randomBetween = function(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    };
-
-    return fortune;
+    return this;
   };
-}) (jQuery);
+
+  $.fn.fortune.rotate = function(angle) {
+    wheel.css({
+      transform: 'rotate(' + angle + 'deg)',
+      '-webkit-transform': 'rotate(' + angle + 'deg)'
+    });
+  };
+
+  $.fn.fortune.spinnerBounce = function(direction_multiplier) {
+    wheel.siblings('.' + opts.spin_classname).css({
+      transform: 'rotate(' + 5 * direction_multiplier + 'deg)',
+      '-webkit-transform': 'rotate(' + 5 * direction_multiplier + 'deg)'
+    });
+  };
+
+  $.fn.fortune.stopSpinnerBounce = function() {
+    wheel.siblings('.' + opts.spin_classname).css({
+      transform: 'rotate(0)',
+      '-webkit-transform': 'rotate(0)'
+    });
+  };
+
+  $.fn.fortune.defaults = {
+    duration: 1000,
+    separation: 2,
+    min_spins: 10,
+    max_spins: 15,
+    direction: 'clockwise',
+    spinner_class: 'spinner',
+    bezier: {
+      p1x: .17,
+      p1y: .67,
+      p2x: .12,
+      p2y: .99
+    },
+    separator_thickness: 3,
+    onSpinBounce: function() {}
+  };
+}(jQuery));

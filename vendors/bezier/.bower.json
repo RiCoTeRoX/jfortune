@@ -1,0 +1,12 @@
+{
+  "name": "bezier",
+  "_release": "be6e5cfaef",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "be6e5cfaef7182e6bfa3f4ba0a62af127ca9cb93"
+  },
+  "_source": "https://gist.github.com/3783009.git",
+  "_target": "*",
+  "_originalSource": "https://gist.github.com/3783009.git"
+}
