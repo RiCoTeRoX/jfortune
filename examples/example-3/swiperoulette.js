@@ -21,19 +21,25 @@ var options = {
       duration: 5000,
       spinner_classname: 'spinner',
       separation: 10,
-      separator_thickness: 5
+      separator_thickness: 5,
+      onSpinBounce: onSpinBounce
     },
     $r = $('.roulette').fortune(options),
     wheel_center = {
       x: $r.offset().left + $r.outerWidth()/2,
       y: $r.offset().top + $r.outerHeight()/2
     },
+    lift_sound = new Howl({
+      urls: ['lift.mp3'],
+      autoplay: false,
+      volume: 1.0
+    }),
     bounce_timeout,
     start_drag_position = {},
     start_drag_angle = 0,
     prev_drag_angle = 0,
     drag_angle = 0,
-    hammertime = Hammer($r[0], { preventDefault: true })
+    hammertime = Hammer($r.find('.wheel')[0], { preventDefault: true })
       .on('dragstart', onDragstartWheel)
       .on('drag', onDragWheel)
       .on('dragend', onDragendWheel)
@@ -90,6 +96,10 @@ function onDragendWheel() {
 function onSwipeWheel(evt) {
   var direction = drag_angle - prev_drag_angle < 0 ? 'counterclockwise' : 'clockwise';
   onSpinWheel(evt, direction);
+}
+
+function onSpinBounce(roulette) {
+  lift_sound.play();
 }
 
 function getAngleBetween(y1, x1, y0, x0) {

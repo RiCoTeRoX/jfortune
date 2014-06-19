@@ -1,9 +1,9 @@
-.container {
+.roulette {
   position: relative;
   width: 300px;
   margin: 0 auto;
 }
-.roulette {
+.wheel {
   width: 300px;
   height: 300px;
   background: #000 url('phieneasroulette.png') no-repeat center center;
@@ -22,8 +22,7 @@
   left: 125px;
   border-radius: 100%;
   z-index: 1000;
-  background-color: #FB1;
-  box-shadow: 0 0 0 3px #000;
+  background-color: #000;
 }
 
 .spinner .pointer {
@@ -34,5 +33,5 @@
   left: 15px;
   border-left: 10px solid transparent;
   border-right: 10px solid transparent;
-  border-bottom: 10px solid #FB1;
+  border-bottom: 10px solid #000;
 }

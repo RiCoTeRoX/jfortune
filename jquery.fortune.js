@@ -7,10 +7,10 @@
       opts,
       prev_angle = 0,
       price,
+      roulette,
       start_time,
       stop,
-      total,
-      wheel;
+      total;
 
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -31,7 +31,7 @@
     y = Bezier.cubicBezier(opts.bezier.p1x, opts.bezier.p1y, opts.bezier.p2x, opts.bezier.p2y, x);
     angle = y * stop;
 
-    wheel.rotate(angle, direction);
+    roulette.rotate(angle, direction);
 
     if (Math.abs(angle) < Math.abs(stop)) {
       requestAnimationFrame(spin);
@@ -46,7 +46,13 @@
         low = opts.separator_thickness * 0.5,
         high = gap - low;
 
-    return mod < low || mod > high || diff > gap * 0.5;
+    if (diff >= gap * 0.5) {
+      return 1;
+    } else if (mod < low || mod > high) {
+      return 2;
+    }
+
+    return 0;
   };
 
   function directionMultiplier(direction) {
@@ -58,7 +64,7 @@
       throw(new Error("You must define the prices."));
     }
 
-    wheel = this;
+    roulette = this;
     opts = $.extend({}, $.fn.fortune.defaults, options);
     total = $.isArray(options.prices) ? opts.prices.length : options.prices;
     gap = 360 / total;
@@ -83,20 +89,22 @@
     };
 
     this.rotate = function(fixed_angle, fixed_direction) {
-      $.fn.fortune.rotate(angle);
+      var need_bounce = needBounce();
+
+      $.fn.fortune.rotate.call(this, angle);
 
       direction = fixed_direction;
       direction_multiplier = directionMultiplier(direction);
       angle = fixed_angle;
 
-      if (needBounce()) {
-        if (!is_bouncing) {
-          $.fn.fortune.spinnerBounce(direction_multiplier);
+      if (need_bounce) {
+        if (need_bounce === 1 || !is_bouncing) {
           opts.onSpinBounce(this);
-          is_bouncing = true;
         }
+        $.fn.fortune.spinnerBounce.call(this, direction_multiplier);
+        is_bouncing = true;
       } else {
-        $.fn.fortune.stopSpinnerBounce();
+        $.fn.fortune.stopSpinnerBounce.call(this);
         is_bouncing = false;
       }
 
@@ -107,21 +115,21 @@
   };
 
   $.fn.fortune.rotate = function(angle) {
-    wheel.css({
+    $('.' + opts.wheel_classname, this).css({
       transform: 'rotate(' + angle + 'deg)',
       '-webkit-transform': 'rotate(' + angle + 'deg)'
     });
   };
 
   $.fn.fortune.spinnerBounce = function(direction_multiplier) {
-    wheel.siblings('.' + opts.spinner_classname).css({
+    $('.' + opts.spinner_classname, this).css({
       transform: 'rotate(' + 5 * direction_multiplier + 'deg)',
       '-webkit-transform': 'rotate(' + 5 * direction_multiplier + 'deg)'
     });
   };
 
   $.fn.fortune.stopSpinnerBounce = function() {
-    wheel.siblings('.' + opts.spinner_classname).css({
+    $('.' + opts.spinner_classname, this).css({
       transform: 'rotate(0)',
       '-webkit-transform': 'rotate(0)'
     });
@@ -133,6 +141,7 @@
     min_spins: 10,
     max_spins: 15,
     direction: 'clockwise',
+    wheel_classname: 'wheel',
     spinner_classname: 'spinner',
     bezier: {
       p1x: .17,

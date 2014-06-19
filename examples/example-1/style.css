@@ -1,8 +1,8 @@
-.container {
+.roulette {
   position: absolute;
   left: 20%;
 }
-.roulette {
+.wheel {
   position: absolute;
   margin: 0 auto;
   width: 300px;

@@ -1,7 +1,7 @@
 var $r = $('.roulette').fortune({
   prices: 24, 
   duration: 5000,
-  direction: -1
+  direction: 'counterclockwise'
 });
 
 var clickHandler = function() {
@@ -17,7 +17,7 @@ var clickHandler = function() {
 var turnLeft = function() {
   $('.turn-left').off('click');
   $('.spinner span').hide();
-  $r.spin(11, -1).done(function(price) {
+  $r.spin(11, 'counterclockwise').done(function(price) {
       $('.price').text(price);
       $('.turn-left').on('click', turnLeft);
       $('.spinner span').show();
@@ -27,7 +27,7 @@ var turnLeft = function() {
 var turnRight = function() {
   $('.turn-left').off('click');
   $('.spinner span').hide();
-  $r.spin(11, 1).done(function(price) {
+  $r.spin(11, 'clockwise').done(function(price) {
       $('.price').text(price);
       $('.turn-left').on('click', turnRight);
       $('.spinner span').show();

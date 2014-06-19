@@ -25,7 +25,7 @@ var options = {
       name: 'Friends'
     }
   ],
-  duration: 7
+  duration: 7000
 };
 
 var $r = $('.roulette').fortune(options);
