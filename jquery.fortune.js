@@ -73,7 +73,7 @@
       var position, rand, spins, direction_multiplier;
 
       deferred = $.Deferred();
-      price = fixed_price || Math.floor(Math.random() * total);
+      price = typeof fixed_price === 'number' ? fixed_price : Math.floor(Math.random() * total);
       direction = fixed_direction || opts.direction;
       direction_multiplier = directionMultiplier(direction);
 
