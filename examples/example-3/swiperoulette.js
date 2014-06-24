@@ -20,7 +20,7 @@ var options = {
       }],
       duration: 5000,
       spinner_classname: 'spinner',
-      separation: 20,
+      separation: 5,
       separator_thickness: 10,
       onSpinBounce: onSpinBounce
     },
@@ -80,7 +80,7 @@ function onDragWheel(evt) {
         x: evt.gesture.center.pageX - wheel_center.x,
         y: evt.gesture.center.pageY - wheel_center.y
       },
-      angle = getAngleBetween(vec.y, vec.x, start_drag_position.y, start_drag_position.x),
+      angle = getAngleBetween(vec.y, vec.x, start_drag_position.y, start_drag_position.x) * 180 / Math.PI,
       direction;
   
   prev_drag_angle = drag_angle;

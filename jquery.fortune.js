@@ -43,7 +43,7 @@
   function needBounce() {
     var mod = Math.abs((gap * 0.5 + angle) % gap),
         diff = Math.abs(angle - prev_angle),
-        low = opts.separator_thickness * 0.5 * Math.PI / 180,
+        low = opts.separator_thickness * 0.5,
         high = gap - low;
 
     if (diff >= gap * 0.5) {
@@ -69,9 +69,6 @@
         matrix3d = '';
 
     for (var i = 0; i < matrix.length; i++) {
-      for (var j = 0; j < matrix[i].length; j++) {
-        matrix[i][j] = matrix[i][j].toFixed(10);
-      }
       matrix3d += (i > 0 ? ',' : '') + matrix[i].join(',');
     }
 
@@ -86,7 +83,7 @@
     roulette = this;
     opts = $.extend({}, $.fn.fortune.defaults, options);
     total = $.isArray(options.prices) ? opts.prices.length : options.prices;
-    gap = Math.PI * 2 / total;
+    gap = 360 / total;
 
     this.spin = function(fixed_price, fixed_direction) {
       var position, rand, spins, direction_multiplier;
@@ -99,7 +96,7 @@
       rand = randomBetween(opts.separation, gap - opts.separation)
       position = gap * ((direction === 'counterclockwise' ? total - price : price) - 0.5) + rand; // gap * price - gap / 2 + rand
       spins = randomBetween(opts.min_spins, opts.max_spins);
-      stop = direction_multiplier * (Math.PI * 2 * spins + position);
+      stop = direction_multiplier * (360 * spins + position);
       prev_angle = start_time = 0;
 
       requestAnimationFrame(spin);
@@ -134,7 +131,7 @@
   };
 
   $.fn.fortune.rotate = function(angle) {
-    var matrix3d = matrix3dRotateZ(angle);
+    var matrix3d = matrix3dRotateZ(angle * Math.PI / 180);
     $('.' + opts.wheel_classname, this).css({
       transform: 'matrix3d(' + matrix3d + ')',
       '-webkit-transform': 'matrix3d(' + matrix3d + ')'
