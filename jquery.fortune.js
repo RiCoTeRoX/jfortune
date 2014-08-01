@@ -85,18 +85,24 @@
     total = $.isArray(options.prices) ? opts.prices.length : options.prices;
     gap = 360 / total;
 
-    this.spin = function(fixed_price, fixed_direction) {
+    this.spin = function(fixed_price, fixed_direction, fixed_stop) {
       var position, rand, spins, direction_multiplier;
 
       deferred = $.Deferred();
-      price = typeof fixed_price === 'number' ? fixed_price : Math.floor(Math.random() * total);
       direction = fixed_direction || opts.direction;
       direction_multiplier = directionMultiplier(direction);
 
-      rand = randomBetween(opts.separation, gap - opts.separation)
-      position = gap * ((direction === 'counterclockwise' ? total - price : price) - 0.5) + rand; // gap * price - gap / 2 + rand
-      spins = randomBetween(opts.min_spins, opts.max_spins);
-      stop = direction_multiplier * (360 * spins + position);
+      if (!fixed_stop) {
+        price = typeof fixed_price === 'number' ? fixed_price : Math.floor(Math.random() * total);
+        rand = randomBetween(opts.separation, gap - opts.separation)
+        position = gap * ((direction === 'counterclockwise' ? total - price : price) - 0.5) + rand; // gap * price - gap / 2 + rand
+        spins = randomBetween(opts.min_spins, opts.max_spins);
+        stop = direction_multiplier * (360 * spins + position);
+      } else {
+        price = fixed_price;
+        stop = direction_multiplier * fixed_stop;
+      }
+
       prev_angle = start_time = 0;
 
       requestAnimationFrame(spin);

@@ -56,7 +56,7 @@ function onSpinWheel(evt, direction) {
     .off('dragend', onDragendWheel)
     .off('swipe', onSwipeWheel);
 
-  $r.spin(3, direction).done(function(price) {
+  $r.spin(1, direction, 3280).done(function(price) {
       $('.price').text('You have: ' + price.name);
       $('.spinner').on('click', onSpinWheel);
       $('.spinner span').show();
