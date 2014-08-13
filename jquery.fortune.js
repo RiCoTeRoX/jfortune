@@ -10,7 +10,8 @@
       roulette,
       start_time,
       stop,
-      total;
+      total,
+      spin_frame;
 
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -34,7 +35,7 @@
     roulette.rotate(angle, direction);
 
     if (Math.abs(angle) < Math.abs(stop)) {
-      requestAnimationFrame(spin);
+      spin_frame = requestAnimationFrame(spin);
     } else {
       deferred.resolve($.isArray(opts.prices) ? opts.prices[price] : price);
     }
@@ -105,7 +106,7 @@
 
       prev_angle = start_time = 0;
 
-      requestAnimationFrame(spin);
+      spin_frame = requestAnimationFrame(spin);
 
       return deferred.promise();
     };
@@ -113,11 +114,11 @@
     this.rotate = function(fixed_angle, fixed_direction) {
       var need_bounce = needBounce();
 
-      $.fn.fortune.rotate.call(this, angle);
-
       direction = fixed_direction;
       direction_multiplier = directionMultiplier(direction);
       angle = fixed_angle;
+
+      $.fn.fortune.rotate.call(this, angle);
 
       if (need_bounce) {
         if (need_bounce === 1 || !is_bouncing) {
@@ -131,6 +132,19 @@
       }
 
       prev_angle = angle;
+    };
+
+    this.forceEnd = function() {
+      if (spin_frame) {
+        cancelAnimationFrame(spin_frame);
+      }
+
+      roulette.rotate(stop, direction);
+      $.fn.fortune.stopSpinnerBounce.call(this);
+      
+      if (deferred) {
+        deferred.resolve($.isArray(opts.prices) ? opts.prices[price] : price);
+      }
     };
 
     return this;
