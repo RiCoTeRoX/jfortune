@@ -15,11 +15,11 @@
 
   function randomBetween(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
+  }
 
   function directionMultiplier(direction) {
     return direction === 'counterclockwise' ? -1 : 1;
-  };
+  }
 
   function spin(timestamp) {
     var x, y;
@@ -39,7 +39,7 @@
     } else {
       deferred.resolve($.isArray(opts.prices) ? opts.prices[price] : price);
     }
-  };
+  }
 
   function needBounce() {
     var mod = Math.abs((gap * 0.5 + angle) % gap),
@@ -54,11 +54,7 @@
     }
 
     return 0;
-  };
-
-  function directionMultiplier(direction) {
-    return direction === 'counterclockwise' ? -1 : 1;
-  };
+  }
 
   function matrix3dRotateZ(angle) {
     var matrix = [
@@ -74,7 +70,7 @@
     }
 
     return matrix3d;
-  };
+  }
 
   $.fn.fortune = function(options) {
     if (!options || !options.prices) {
@@ -95,7 +91,7 @@
 
       if (!fixed_stop) {
         price = typeof fixed_price === 'number' ? fixed_price : Math.floor(Math.random() * total);
-        rand = randomBetween(opts.separation, gap - opts.separation)
+        rand = randomBetween(opts.separation, gap - opts.separation);
         position = gap * ((direction === 'counterclockwise' ? total - price : price) - 0.5) + rand; // gap * price - gap / 2 + rand
         spins = randomBetween(opts.min_spins, opts.max_spins);
         stop = direction_multiplier * (360 * spins + position);
@@ -141,10 +137,15 @@
 
       roulette.rotate(stop, direction);
       $.fn.fortune.stopSpinnerBounce.call(this);
-      
+
       if (deferred) {
         deferred.resolve($.isArray(opts.prices) ? opts.prices[price] : price);
       }
+    };
+
+    this.destroy = function() {
+      roulette.removeData();
+      roulette = null;
     };
 
     return this;
@@ -183,10 +184,10 @@
     wheel_classname: 'wheel',
     spinner_classname: 'spinner',
     bezier: {
-      p1x: .17,
-      p1y: .67,
-      p2x: .12,
-      p2y: .99
+      p1x: 0.17,
+      p1y: 0.67,
+      p2x: 0.12,
+      p2y: 0.99
     },
     separator_thickness: 7,
     onSpinBounce: function() {}
