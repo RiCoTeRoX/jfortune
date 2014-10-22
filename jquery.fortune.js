@@ -144,8 +144,10 @@
     };
 
     this.destroy = function() {
-      roulette.removeData();
-      roulette = null;
+      if (roulette) {
+        roulette.removeData();
+        roulette = null;
+      }
     };
 
     return this;
