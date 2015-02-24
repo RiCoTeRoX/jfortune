@@ -22,17 +22,22 @@
   }
 
   function spin(timestamp) {
-    var x, y;
+    var delta, x, y;
 
     if (!start_time) {
       start_time = timestamp;
     }
 
-    x = (timestamp - start_time)/opts.duration;
-    y = Bezier.cubicBezier(opts.bezier.p1x, opts.bezier.p1y, opts.bezier.p2x, opts.bezier.p2y, x);
-    angle = y * stop;
+    delta = timestamp - start_time;
 
-    roulette.rotate(angle, direction);
+    if (delta < opts.duration) {
+      x = delta/opts.duration;
+      y = Bezier.cubicBezier(opts.bezier.p1x, opts.bezier.p1y, opts.bezier.p2x, opts.bezier.p2y, x);
+      angle = y * stop;
+      roulette.rotate(angle, direction);
+    } else {
+      roulette.forceEnd();
+    }
 
     if (Math.abs(angle) < Math.abs(stop)) {
       spin_frame = requestAnimationFrame(spin);
