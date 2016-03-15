@@ -1,0 +1,23 @@
+{
+  "name": "jfortune",
+  "version": "1.0.0",
+  "description": "A jquery plugin to make wheel of fortunes",
+  "main": "jquery.fortune.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agustinrodriguez/jfortune.git"
+  },
+  "author": "agustinrodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agustinrodriguez/jfortune/issues"
+  },
+  "homepage": "https://github.com/agustinrodriguez/jfortune#readme"
+}
