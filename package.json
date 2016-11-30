@@ -1,11 +1,12 @@
 {
   "name": "jfortune",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A jquery plugin to make wheel of fortunes",
   "main": "jquery.fortune.js",
   "dependencies": {
     "bezier": "github:matiasjgoitea/bezier",
-    "easing": "github:matiasjgoitea/easing"
+    "easing": "github:matiasjgoitea/easing",
+    "qunit": "~1.14.0"
   },
   "directories": {
     "example": "examples",
