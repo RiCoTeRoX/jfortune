@@ -1,6 +1,7 @@
-(function($) {
-  var Bezier = require('bezier'),
-      deferred,
+import brezier from 'brezier';
+
+export default () => {
+  var deferred,
       angle,
       direction,
       gap,
@@ -200,4 +201,4 @@
     separator_thickness: 7,
     onSpinBounce: function() {}
   };
-}(jQuery));
+};
