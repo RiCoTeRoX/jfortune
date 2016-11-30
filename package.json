@@ -1,8 +1,12 @@
 {
   "name": "jfortune",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A jquery plugin to make wheel of fortunes",
   "main": "jquery.fortune.js",
+  "dependencies": {
+    "bezier": "github:matiasjgoitea/bezier",
+    "easing": "github:matiasjgoitea/easing"
+  },
   "directories": {
     "example": "examples",
     "test": "test"
@@ -12,12 +16,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/agustinrodriguez/jfortune.git"
+    "url": "git+https://github.com/matiasjgoitea/jfortune.git"
   },
-  "author": "agustinrodriguez",
-  "license": "ISC",
+  "author": "Etermax",
+  "contributors": [
+    {
+      "name": "Agustin Rodriguez",
+      "email": "agustin.rodriguez@etermax.com"
+    },
+    {
+      "name": "Matias Goitea",
+      "email": "matiasjgoitea@gmail.com"
+    }
+  ],
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/agustinrodriguez/jfortune/issues"
+    "url": "https://github.com/matiasjgoitea/jfortune.git/issues"
   },
-  "homepage": "https://github.com/agustinrodriguez/jfortune#readme"
+  "homepage": "https://github.com/matiasjgoitea/jfortune.git#readme"
 }

@@ -1,5 +1,6 @@
 (function($) {
-  var deferred,
+  var Bezier = require('bezier'),
+      deferred,
       angle,
       direction,
       gap,

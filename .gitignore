@@ -1,2 +1,5 @@
 jfortune.sublime-project
 jfortune.sublime-workspace
+
+# NPM packages folder.
+node_modules/
