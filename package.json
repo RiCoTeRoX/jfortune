@@ -1,18 +1,27 @@
 {
   "name": "jfortune",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A jquery plugin to make wheel of fortunes",
-  "main": "jquery.fortune.js",
+  "main": "./dist/jquery.fortune.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babelizar": "babel ./src/jquery.fortune.js --out-file ./dist/jquery.fortune.js"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-preset-latest": "^6.16.0"
+  },
   "dependencies": {
+    "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
+    "babel-plugin-transform-object-assign": "^6.8.0",
+    "babel-plugin-transform-object-rest-spread": "^6.19.0",
     "bezier": "github:matiasjgoitea/bezier",
-    "easing": "github:matiasjgoitea/easing"
+    "easing": "github:matiasjgoitea/easing",
+    "eslint": "^3.10.2"
   },
   "directories": {
     "example": "examples",
     "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
