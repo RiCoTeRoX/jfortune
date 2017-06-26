@@ -1,6 +1,6 @@
 {
   "name": "jfortune",
-  "version": "2.0",
+  "version": "2.1",
   "description": "A jquery plugin to make wheel of fortunes",
   "main": "./dist/jquery.fortune.js",
   "scripts": {
