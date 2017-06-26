@@ -1,4 +1,4 @@
-import brezier from 'brezier';
+import bezier from 'bezier';
 
 export default (() => {
   var deferred,
