@@ -1,5 +1,6 @@
 jfortune.sublime-project
 jfortune.sublime-workspace
+npm-debug.log
 
 # NPM packages folder.
 node_modules/

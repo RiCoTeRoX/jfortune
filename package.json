@@ -1,11 +1,11 @@
 {
   "name": "jfortune",
-  "version": "1.1.2",
+  "version": "2.0",
   "description": "A jquery plugin to make wheel of fortunes",
   "main": "./dist/jquery.fortune.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "babelizar": "babel ./src/jquery.fortune.js --out-file ./dist/jquery.fortune.js"
+    "build": "babel ./src/jquery.fortune.js --out-file ./dist/jquery.fortune.js"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -15,32 +15,15 @@
     "babel-plugin-transform-es2015-arrow-functions": "^6.8.0",
     "babel-plugin-transform-object-assign": "^6.8.0",
     "babel-plugin-transform-object-rest-spread": "^6.19.0",
-    "bezier": "github:matiasjgoitea/bezier",
-    "easing": "github:matiasjgoitea/easing",
+    "bezier": "github:ricoterox/bezier",
+    "easing": "github:ricoterox/easing",
     "eslint": "^3.10.2"
-  },
-  "directories": {
-    "example": "examples",
-    "test": "test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/matiasjgoitea/jfortune.git"
+    "url": "git+https://github.com/ricoterox/jfortune.git"
   },
   "author": "Etermax",
-  "contributors": [
-    {
-      "name": "Agustin Rodriguez",
-      "email": "agustin.rodriguez@etermax.com"
-    },
-    {
-      "name": "Matias Goitea",
-      "email": "matiasjgoitea@gmail.com"
-    }
-  ],
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/matiasjgoitea/jfortune.git/issues"
-  },
-  "homepage": "https://github.com/matiasjgoitea/jfortune.git#readme"
+  "homepage": "https://github.com/ricoterox/jfortune.git#readme"
 }

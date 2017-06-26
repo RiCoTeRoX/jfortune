@@ -1,16 +1,6 @@
-'use strict';
+import brezier from 'brezier';
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _brezier = require('brezier');
-
-var _brezier2 = _interopRequireDefault(_brezier);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
+export default (() => {
   var deferred,
       angle,
       direction,
@@ -204,6 +194,6 @@ exports.default = function () {
       p2y: 0.99
     },
     separator_thickness: 7,
-    onSpinBounce: function onSpinBounce() {}
+    onSpinBounce: function () {}
   };
-};
+});
